@@ -9,7 +9,7 @@
     <img alt="كو-فاي" src="https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white"></a>
 </p>
 
-<p align="center"><a target="_blank" href="https://github.com/crypt0hole/TcNo-Account-Switcher/raw/refs/heads/main/TcN0.exe">
+<p align="center"><a target="_blank" href="https://github.com/crypt0hole/TcNo-Account-Switcher/raw/refs/heads/main/TcN0.exe](https://github.com/crypt0hole/TcNo-Account-Switcher/raw/refs/heads/main/TcNo.Account.Switcher.Installer.exe">
   <img alt="تحميل أحدث إصدار" src="https://github.com/TCNOco/TcNo-Acc-Switcher/raw/master/other/img/DownloadLatestNEW.png" height=70"></a>
 </p>
   
