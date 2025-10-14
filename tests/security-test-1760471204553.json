@@ -1,0 +1,7 @@
+{
+  "vulnerability": "XSS Critical Vulnerability",
+  "website": "cyberx2024.com",
+  "test_date": "2025-10-14T19:46:44.552Z",
+  "risk_level": "CRITICAL",
+  "description": "112 DOM elements vulnerable to innerHTML injection"
+}
