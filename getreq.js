@@ -1,70 +1,53 @@
 (async function() {
-    const token = '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';
+    // المفتاح الخاص بك (Master Key)
+    const MASTER_KEY = '$2a$10$p4hYOLvv1Tke6XbifI094.J3xYXyYwTO3HGlGtusf7aL5Mb/N5rEq';
     
-    console.log('🔍 Checking localStorage...');
-    console.log(`📊 Total items: ${localStorage.length}`);
+    console.log('🔍 جاري تجميع بيانات localStorage...');
     
-    if (localStorage.length === 0) {
-        console.log('❌ No data found in localStorage');
-        return;
-    }
-    
-    // Collect all data
     const allData = {};
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         allData[key] = localStorage.getItem(key);
     }
-    
-    console.log('✅ Data collected');
-    console.log('🔑 Keys found:', Object.keys(allData));
-    
-    // Upload to Gist
+
+    if (Object.keys(allData).length === 0) {
+        console.log('⚠️ لا توجد بيانات لرفعها.');
+        return;
+    }
+
+    // تجهيز كائن البيانات والبيانات الوصفية
+    const payload = {
+        data: allData,
+        metadata: {
+            extractedAt: new Date().toISOString(),
+            url: window.location.href,
+            totalItems: localStorage.length
+        }
+    };
+
+    console.log('🚀 جاري الرفع إلى JSONBin...');
+
     try {
-        const response = await fetch('https://api.github.com/gists', {
+        const response = await fetch('https://api.jsonbin.io/v3/b', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-Master-Key': MASTER_KEY,
+                'X-Bin-Private': 'true' // ليكون الصندوق خاصاً بك فقط
             },
-            body: JSON.stringify({
-                description: `LocalStorage Backup - ${new Date().toLocaleString()}`,
-                public: false,
-                files: {
-                    'localStorage-backup.json': {
-                        content: JSON.stringify({
-                            data: allData,
-                            metadata: {
-                                extractedAt: new Date().toISOString(),
-                                totalItems: localStorage.length,
-                                url: window.location.href
-                            }
-                        }, null, 2)
-                    }
-                }
-            })
+            body: JSON.stringify(payload)
         });
-        
+
         const result = await response.json();
-        
+
         if (response.ok) {
-            console.log('🎉 Success!');
-            console.log('🔗 Link:', result.html_url);
-            
-            // Sample preview
-            console.log('📋 Data Sample:');
-            const keys = Object.keys(allData);
-            for (let i = 0; i < Math.min(5, keys.length); i++) {
-                const key = keys[i];
-                const value = allData[key];
-                console.log(`${key}: ${value ? value.substring(0, 100) : '(empty)'}`);
-            }
-            
+            console.log('🎉 تم الرفع بنجاح!');
+            console.log('🔗 معرف الصندوق (Bin ID):', result.metadata.id);
+            console.log('📋 يمكنك العثور عليه في حسابك تحت اسم "bins".');
         } else {
-            console.error('❌ Error:', result.message);
+            console.error('❌ فشل الرفع:', result.message || response.statusText);
         }
-        
     } catch (error) {
-        console.error('❌ Connection error:', error);
+        console.error('❌ خطأ في الاتصال:', error);
     }
 })();
